@@ -1,0 +1,5 @@
+cek port 
+lsof -i :3000
+
+Matikan port 
+kill -9 <PID>

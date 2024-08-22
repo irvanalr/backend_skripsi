@@ -1,0 +1,65 @@
+ CREATE TABLE tokens (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  token VARCHAR(255) NOT NULL,
+  status INT NOT NULL DEFAULT 0,
+  timestamp_create TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  timestamp_expired TIMESTAMP AS (timestamp_create + INTERVAL 1 MONTH)
+) engine = InnoDB;
+
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  token_id INT,
+  username VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  token VARCHAR(255) NOT NULL DEFAULT '0',
+  status INT NOT NULL DEFAULT 0,
+  timestamp_login DATETIME DEFAULT NULL,
+  timestamp_logout DATETIME DEFAULT NULL,
+  total_login int NOT NULL DEFAULT '0',
+  total_logout int NOT NULL DEFAULT '0',
+  failed_login_attempts int DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `fk_users_tokens` (`token_id`),
+  CONSTRAINT fk_users_tokens FOREIGN KEY (token_id) REFERENCES tokens(id)
+) engine = InnoDB;
+
+ ALTER TABLE tokens MODIFY COLUMN timestamp_expired TIMESTAMP AS (timestamp_create + INTERVAL 1 MONTH);
+
+ UPDATE nama_tabel
+ SET timestamp_create = NOW()
+ WHERE id = 1;
+
+// extract menjadi file sql 
+mysqldump -u root -p kkp_perbankan > C:\Users\irvan\Downloads\kkp_perbankan_script
+
+// mengimport file sql 
+mysql -u root -p kkp_perbankan < kkp_perbankan.sql
+
+ALTER TABLE users
+ADD COLUMN aktivasi INT NOT NULL DEFAULT 1 AFTER token_id,
+ADD COLUMN name VARCHAR(100) NOT NULL AFTER password;
+
+ALTER TABLE users
+ADD COLUMN total_login INT NOT NULL DEFAULT 0 AFTER timestamp_logout,
+ADD COLUMN total_logout INT NOT NULL DEFAULT 0 AFTER total_login;
+
+-- 1. Hapus constraint foreign key terlebih dahulu
+ALTER TABLE `users` DROP FOREIGN KEY `fk_users_tokens`;
+
+-- 2. Ubah tipe data kolom token_id menjadi int NOT NULL
+ALTER TABLE `users` MODIFY `token_id` int NOT NULL;
+
+-- 3. Tambahkan kembali constraint foreign key
+ALTER TABLE `users` ADD CONSTRAINT `fk_users_tokens` FOREIGN KEY (`token_id`) REFERENCES `tokens` (`id`);
+
+// Menampilkan semua table 
+SELECT 
+    tokens.*, 
+    users.*, 
+    user_activities.*
+FROM 
+    users
+JOIN 
+    tokens ON users.token_id = tokens.id
+JOIN 
+    user_activities ON users.id = user_activities.user_id;

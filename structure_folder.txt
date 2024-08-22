@@ -1,0 +1,24 @@
+project
+│
+├── config
+│   └── database.js
+│
+├── middlewares
+│   └── checkHeaders.js
+│   └── checkUserAgent.js
+│
+├── controllers
+│   └── authController.js
+│
+├── models
+│   └── tokenModel.js
+│
+├── routes
+│   └── authRoutes.js
+│
+├── .env
+├── app.js
+│
+└── test
+    └── authController.test.js
+    └── middlewares.test.js
