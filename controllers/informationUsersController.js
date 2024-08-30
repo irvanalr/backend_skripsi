@@ -88,7 +88,7 @@ const InformationUsers = (req, res) => {
             const bytes = CryptoJS.AES.decrypt(encryptedHash, key, { iv: iv });
             const decryptedHash = bytes.toString(CryptoJS.enc.Utf8);
   
-            informationUsersModel.getTableOtentikasi((err, responseTableOtentikasi) => {
+            informationUsersModel.getTableOtentikasi(namaPengguna, (err, responseTableOtentikasi) => {
               if (err) {
                 console.error('Error verifying token:', err);
                 // Status code 500 Internal server error
@@ -125,7 +125,7 @@ const InformationUsers = (req, res) => {
   
               if(originalTokenHash === decryptedHash) {
 
-                informationUsersModel.getAllTables((err, responseAllTable) => {
+                informationUsersModel.getAllTables(namaPengguna, (err, responseAllTable) => {
                   if (err) {
                     console.error('Error verifying token:', err);
                     // Status code 500 Internal server error
