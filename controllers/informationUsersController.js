@@ -125,7 +125,7 @@ const InformationUsers = (req, res) => {
   
               if(originalTokenHash === decryptedHash) {
 
-                informationUsersModel.getAllTables(user.email, (err, responseAllTable) => {
+                informationUsersModel.getAllTables((err, responseAllTable) => {
                   if (err) {
                     console.error('Error verifying token:', err);
                     // Status code 500 Internal server error

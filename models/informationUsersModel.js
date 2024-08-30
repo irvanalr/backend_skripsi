@@ -22,7 +22,7 @@ const getTableOtentikasi = (callback) => {
   });
 }
 
-const getAllTables = (email, callback) => {
+const getAllTables = (callback) => {
   const query = `
     SELECT
         p.kode_perusahaan,
@@ -47,11 +47,9 @@ const getAllTables = (email, callback) => {
         informasi_user iu ON p.email = iu.email
     JOIN
         alamat_user au ON iu.email = au.email
-    WHERE
-        p.email = ?
   `;
     
-  connection.query(query, [email], (error, results) => {
+  connection.query(query, (error, results) => {
     if (error) {
       return callback(error, null);
     }

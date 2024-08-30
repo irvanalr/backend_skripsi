@@ -87,7 +87,7 @@ const listRekeningPembiayaan = (req, res) => {
             const bytes = CryptoJS.AES.decrypt(encryptedHash, key, { iv: iv });
             const decryptedHash = bytes.toString(CryptoJS.enc.Utf8);
   
-            listRekeningPembiayaanModel.getTableOtentikasi((err, responseTableOtentikasi) => {
+            listRekeningPembiayaanModel.getTableOtentikasi(namaPengguna, (err, responseTableOtentikasi) => {
               if (err) {
                 console.error('Error verifying token:', err);
                 // Status code 500 Internal server error
@@ -124,7 +124,7 @@ const listRekeningPembiayaan = (req, res) => {
   
               if(originalTokenHash === decryptedHash) {
 
-                listRekeningPembiayaanModel.getAllTables(user.email, (err, responseAllTable) => {
+                listRekeningPembiayaanModel.getAllTables(user.kode_cabang, (err, responseAllTable) => {
                   if (err) {
                     console.error('Error verifying token:', err);
                     // Status code 500 Internal server error

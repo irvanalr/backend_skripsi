@@ -135,7 +135,7 @@ const informasiRekeningSimpanan = (req, res) => {
   
               if(originalTokenHash === decryptedHash) {
 
-                informasiRekeningSimpananModel.getAllTables(user.email, (err, responseAllTable) => {
+                informasiRekeningSimpananModel.getAllTables((err, responseAllTable) => {
                   if (err) {
                     console.error('Error verifying token:', err);
                     // Status code 500 Internal server error

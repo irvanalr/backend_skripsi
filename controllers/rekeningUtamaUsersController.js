@@ -88,7 +88,7 @@ const rekeningUtamaUsers = (req, res) => {
             const bytes = CryptoJS.AES.decrypt(encryptedHash, key, { iv: iv });
             const decryptedHash = bytes.toString(CryptoJS.enc.Utf8);
   
-            rekeningUtamaUsersModel.getTableOtentikasi((err, responseTableOtentikasi) => {
+            rekeningUtamaUsersModel.getTableOtentikasi(namaPengguna, (err, responseTableOtentikasi) => {
               if (err) {
                 console.error('Error verifying token:', err);
                 // Status code 500 Internal server error
@@ -125,7 +125,7 @@ const rekeningUtamaUsers = (req, res) => {
   
               if(originalTokenHash === decryptedHash) {
                 
-                rekeningUtamaUsersModel.getTablePerusahaanCabang(user.email, (err, responseTablePerusahaanCabang) => {
+                rekeningUtamaUsersModel.getTablePerusahaan(user.kode_cabang, (err, responseTablePerusahaanCabang) => {
                   if (err) {
                     console.error('Error verifying token:', err);
                     // Status code 500 Internal server error

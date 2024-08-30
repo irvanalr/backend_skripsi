@@ -22,7 +22,7 @@ const getTableToken = (callback) => {
     });
   }
 
-const getAllTables = (email, callback) => {
+const getAllTables = (callback) => {
     const query = `
       SELECT
           p.kode_perusahaan AS companyCode,
@@ -44,15 +44,13 @@ const getAllTables = (email, callback) => {
           simpanan s ON ps.kode_simpanan = s.kode_simpanan
       JOIN
           informasi_user iu ON p.email = iu.email
-      WHERE
-          p.email = ?
     `;
       
-    connection.query(query, [email], (error, results) => {
-        if (error) {
-            return callback(error, null);
-        }
-        callback(null, results);
+    connection.query(query, (error, results) => {
+      if (error) {
+        return callback(error, null);
+      }
+      callback(null, results);
     });
 };
 
