@@ -127,11 +127,12 @@ const listRekeningDeposito = (req, res) => {
                 listRekeningDepositoSimpananBerjangkaModel.getAllTables(user.kode_cabang, (err, responseAllTable) => {
                   if (err) {
                     console.error('Error verifying token:', err);
-                    // Status code 500 Internal server error
-                    return res.status(500).json({
+                    // Status code 404 not found
+                    return res.status(404).json({
                       timestamp: formatDateToJakarta(new Date()),
-                      status: 0,
-                      message: "SERVER MENGALAMI GANGGUAN, SILAHKAN COBA LAGI NANTI !!!"
+                      status: 1,
+                      message: "Success",
+                      deposits: []
                     });
                   }
 

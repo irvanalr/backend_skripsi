@@ -143,7 +143,7 @@ const rekeningUtamaUsers = (req, res) => {
                     status: 1,
                     message: "Success rekening utama",
                     registration: user.registrasi,
-                    prouctName: user.nama_produk_simpanan,
+                    productName: user.nama_produk_simpanan,
                     code: user.kode_simpanan,
                     name: user.nama,
                     balance: user.saldo_simpanan,
