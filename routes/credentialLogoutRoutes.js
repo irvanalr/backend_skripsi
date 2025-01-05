@@ -1,14 +1,17 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const credentialController = require('../controllers/credentialController');
-const checkUserAgent = require('../middlewares/checkUserAgent');
-const { checkHeaders3 } = require('../middlewares/checkHeaders');
+const credentialLogoutController = require("../controllers/credentialLogoutController");
+const checkUserAgent = require("../middlewares/checkUserAgent");
+const { checkHeaders3 } = require("../middlewares/checkHeaders");
 
-// Middleware 
+// Middleware
 router.use(checkUserAgent);
 router.use(checkHeaders3);
 
 // Endpoint untuk logout
-router.delete('/logout/:namaPengguna', credentialController.logout);
+router.delete(
+  "/api/mobile/personal/session",
+  credentialLogoutController.logout
+);
 
 module.exports = router;

@@ -8,6 +8,6 @@ const { checkHeaders1 } = require("../middlewares/checkHeaders");
 router.use(checkUserAgent);
 router.use(checkHeaders1);
 
-router.get('/api-key', tokenController.getTokenApi);
+router.get("/api/mobile/personal/session", tokenController.getTokenApi);
 
 module.exports = router;

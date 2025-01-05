@@ -1,14 +1,16 @@
 // Middleware untuk getTokenApi
 const checkHeaders1 = (req, res, next) => {
-  const mobileAppHeader = req.get('mobile-app');
-  const contentTypeHeader = req.get('Content-Type');
-  const acceptHeader = req.get('accept');
+  const mobileAppHeader = req.get("mobile-app");
+  const contentTypeHeader = req.get("Content-Type");
+  const acceptHeader = req.get("accept");
 
   // Periksa keberadaan headers yang diperlukan
-  if ((!mobileAppHeader || !contentTypeHeader) || acceptHeader !== 'application/json') {
-    return res.status(400).json({
-      message: 'Masukkan headers yang diperlukan !!!'
-    });
+  if (
+    !mobileAppHeader ||
+    !contentTypeHeader ||
+    acceptHeader !== "application/json"
+  ) {
+    return res.status(404).send("404 NOT FOUND !!!");
   }
 
   // Jika semua headers valid, lanjutkan ke handler berikutnya
@@ -17,16 +19,19 @@ const checkHeaders1 = (req, res, next) => {
 
 // Middleware untuk user login
 const checkHeaders2 = (req, res, next) => {
-  const mobileAppHeader = req.get('mobile-app');
-  const contentTypeHeader = req.get('Content-Type');
-  const acceptHeader = req.get('accept');
-  const authorizationHeader = req.get('Authorization');
+  const mobileAppHeader = req.get("mobile-app");
+  const contentTypeHeader = req.get("Content-Type");
+  const acceptHeader = req.get("accept");
+  const authorizationHeader = req.get("Authorization");
 
   // Periksa keberadaan headers yang diperlukan
-  if ( (!mobileAppHeader || !contentTypeHeader) || (acceptHeader !== 'application/json' || !authorizationHeader) ) {
-    return res.status(400).json({
-      message: 'Masukkan headers yang diperlukan !!!'
-    });
+  if (
+    !mobileAppHeader ||
+    !contentTypeHeader ||
+    acceptHeader !== "application/json" ||
+    !authorizationHeader
+  ) {
+    return res.status(404).send("404 NOT FOUND !!!");
   }
 
   // Jika semua headers valid, lanjutkan ke handler berikutnya
@@ -34,17 +39,24 @@ const checkHeaders2 = (req, res, next) => {
 };
 
 const checkHeaders3 = (req, res, next) => {
-  const mobileAppHeader = req.get('mobile-app');
-  const contentTypeHeader = req.get('Content-Type');
-  const acceptHeader = req.get('accept');
-  const authorizationHeader = req.get('Authorization');
-  const mobileCredentialHeader = req.get('mobile-credential');
+  const mobileAppHeader = req.get("mobile-app");
+  const contentTypeHeader = req.get("Content-Type");
+  const acceptHeader = req.get("accept");
+  const authorizationHeader = req.get("Authorization");
+  const mobileCredentialHeader = req.get("mobile-credential");
+  const name = req.get("name");
 
   // Periksa keberadaan headers yang diperlukan
-  if ( ( (!mobileAppHeader || !contentTypeHeader) || (!acceptHeader || !authorizationHeader) ) || (!mobileCredentialHeader || acceptHeader !== 'application/json')) {
-    return res.status(400).json({
-      message: 'Masukkan headers yang diperlukan !!!'
-    });
+  if (
+    !mobileAppHeader ||
+    !contentTypeHeader ||
+    !acceptHeader ||
+    !authorizationHeader ||
+    !mobileCredentialHeader ||
+    !name ||
+    acceptHeader !== "application/json"
+  ) {
+    return res.status(404).send("404 NOT FOUND !!!");
   }
 
   // Jika semua headers valid, lanjutkan ke handler berikutnya

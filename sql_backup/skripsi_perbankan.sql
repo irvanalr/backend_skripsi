@@ -1,9 +1,15 @@
+-- Membuat database skripsi_perbankan
+CREATE DATABASE skripsi_perbankan;
+
+-- Menggunakan database skripsi_perbankan
+USE skripsi_perbankan;
+
 -- Membuat tabel token
 CREATE TABLE token (
     token_value VARCHAR(255) PRIMARY KEY,                                             
     tanggal_di_buat DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, 
     tanggal_kadaluarsa DATETIME NOT NULL,
-    status ENUM('active', 'inactive', 'revoked') DEFAULT 'active' NOT NULL
+    status ENUM('active', 'revoked') DEFAULT 'active' NOT NULL
 );
 
 -- Membuat tabel otentikasi
@@ -11,10 +17,45 @@ CREATE TABLE otentikasi (
     nama_pengguna VARCHAR(255) PRIMARY KEY,
     token_value VARCHAR(255) NOT NULL,
     kata_sandi VARCHAR(255) NOT NULL,
-    pin VARCHAR(6) NOT NULL,
-    login_attempts INT DEFAULT 0, 
-    aktivasi ENUM('active', 'inactive', 'revoked') DEFAULT 'active' NOT NULL,
+    pin VARCHAR(6),
+    account_status ENUM('active', 'revoked') DEFAULT 'active',
     FOREIGN KEY (token_value) REFERENCES token(token_value)
+);
+
+-- Membuat table user_activity_login
+CREATE TABLE user_activity_login (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nama_pengguna VARCHAR(255),
+  total_login INT DEFAULT 0,
+  last_login DATETIME,
+  FOREIGN KEY (nama_pengguna) REFERENCES otentikasi(nama_pengguna)
+);
+
+-- Membuat table user_activity_logout
+CREATE TABLE user_activity_logout (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nama_pengguna VARCHAR(255),
+  total_logout INT DEFAULT 0,
+  last_logout DATETIME,
+  FOREIGN KEY (nama_pengguna) REFERENCES otentikasi(nama_pengguna)  
+);
+
+-- Membuat table user_activity_failed_login
+CREATE TABLE user_activity_failed_login (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nama_pengguna VARCHAR(255),
+  total_failed_login INT DEFAULT 0,
+  last_failed_login DATETIME,
+  FOREIGN KEY (nama_pengguna) REFERENCES otentikasi(nama_pengguna)  
+);
+
+-- Membuat table user_activity_change_password
+CREATE TABLE user_activity_change_password (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nama_pengguna VARCHAR(255),
+  total_change_password INT DEFAULT 0,
+  last_change_password DATETIME,
+  FOREIGN KEY (nama_pengguna) REFERENCES otentikasi(nama_pengguna)  
 );
 
 -- Membuat tabel informasi_user
@@ -64,7 +105,6 @@ CREATE TABLE produk_simpanan (
 
 -- Membuat tabel simpanan
 CREATE TABLE simpanan (
-    id_simpanan INT AUTO_INCREMENT PRIMARY KEY,
     kode_simpanan VARCHAR(20) NOT NULL,
     skema_produk VARCHAR(50) NOT NULL,
     tanggal_di_buat DATETIME NOT NULL,
@@ -127,12 +167,12 @@ CREATE TABLE pembiayaan (
 
 -- Menambahkan data ke tabel token
 INSERT INTO token (token_value, tanggal_kadaluarsa, tanggal_di_buat, status) VALUES
-('kkpPerbankan', '2024-09-01 12:00:00', '2024-08-20 10:00:00', 'active');
+('skripsiPerbankan', '2025-02-28 12:00:00', '2024-08-20 10:00:00', 'active');
 
 -- Menambahkan data ke tabel otentikasi
-INSERT INTO otentikasi (nama_pengguna, token_value, kata_sandi, pin, aktivasi) VALUES
-('irvan', 'kkpPerbankan', 'irvan123', '123456', 'active'),
-('budi','kkpPerbankan', 'budi123', '123456', 'active');
+INSERT INTO otentikasi (nama_pengguna, token_value, kata_sandi) VALUES
+('irvan', 'skripsiPerbankan', 'irvan123'),
+('budi','skripsiPerbankan', 'budi123');
 
 -- Menambahkan data ke tabel informasi_user
 INSERT INTO informasi_user (email, nama_pengguna, nama, no_hp, jenis_kelamin, tanggal_lahir, registrasi, kode_akun) VALUES
