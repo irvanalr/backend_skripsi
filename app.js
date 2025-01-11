@@ -1,5 +1,7 @@
 const express = require("express");
 const tokenRoutes = require("./routes/tokenRoutes");
+const registrasiRoutes = require("./routes/registrasiRoutes");
+const registrasiGetRoutes = require("./routes/registrasiGetRoutes");
 const credentialLoginRoutes = require("./routes/credentialLoginRoutes");
 const credentialLogoutRoutes = require("./routes/credentialLogoutRoutes");
 const credentialChangePasswordRoutes = require("./routes/credentialChangePasswordRoutes");
@@ -25,6 +27,8 @@ app.use(express.static("public"));
 
 // Gunakan rute
 app.use(tokenRoutes);
+app.use(registrasiRoutes);
+app.use(registrasiGetRoutes);
 app.use(credentialLoginRoutes);
 app.use(credentialLogoutRoutes);
 app.use(credentialChangePasswordRoutes);

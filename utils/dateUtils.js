@@ -29,4 +29,7 @@ function getFormattedDateToDatabase() {
   );
 }
 
-module.exports = { formatDateToJakarta, getFormattedDateToDatabase };
+module.exports = {
+  formatDateToJakarta,
+  getFormattedDateToDatabase,
+};
