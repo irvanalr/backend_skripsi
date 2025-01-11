@@ -49,7 +49,7 @@ const registrasi = (req, res) => {
       status: 1,
       message: "Email kosong, silahkan isikan email anda !!!",
     });
-  } else if (emailRegex.test(email)) {
+  } else if (!emailRegex.test(email)) {
     return res.status(400).json({
       timestamp: formatDateToJakarta(new Date()),
       status: 1,
@@ -144,17 +144,17 @@ const registrasi = (req, res) => {
                       "SERVER MENGALAMI GANGGUAN, SILAHKAN COBA LAGI NANTI !!!",
                   });
                 } else {
-                  const emailAes = encryptAES(email);
                   const namaAes = encryptAES(nama);
                   const noHpAes = encryptAES(noHp);
                   const nikAes = encryptAES(nik);
                   const namaIbuKandungAes = encryptAES(namaIbuKandung);
                   const user = responseGetTableInformasiUser.find(
-                    (user) => decryptAES(user.email) === email
+                    (user) => user.email === email
                   );
+
                   if (user === undefined) {
                     registrasiModel.insertTableInformasi(
-                      emailAes,
+                      email,
                       namaAes,
                       noHpAes,
                       jenisKelamin,
@@ -175,7 +175,7 @@ const registrasi = (req, res) => {
                           const alamatAes = encryptAES(alamat);
                           const kotaAes = encryptAES(kota);
                           registrasiModel.insertTableAlamatUser(
-                            emailAes,
+                            email,
                             alamatAes,
                             kodePos,
                             kotaAes,
@@ -213,7 +213,7 @@ const registrasi = (req, res) => {
                     );
                   } else if (
                     user !== undefined &&
-                    decryptAES(user.email) === email &&
+                    user.email === email &&
                     (user.registrasi_status === "pending" ||
                       user.registrasi_status === "verified" ||
                       user.registrasi_status === "registered")
@@ -226,11 +226,10 @@ const registrasi = (req, res) => {
                     });
                   } else if (
                     user !== undefined &&
-                    decryptAES(user.email) === email &&
+                    user.email === email &&
                     user.registrasi_status === "expired"
                   ) {
                     registrasiModel.insertTableInformasi(
-                      emailAes,
                       namaAes,
                       noHpAes,
                       jenisKelamin,
@@ -251,7 +250,7 @@ const registrasi = (req, res) => {
                           const alamatAes = encryptAES(alamat);
                           const kotaAes = encryptAES(kota);
                           registrasiModel.insertTableAlamatUser(
-                            emailAes,
+                            email,
                             alamatAes,
                             kodePos,
                             kotaAes,

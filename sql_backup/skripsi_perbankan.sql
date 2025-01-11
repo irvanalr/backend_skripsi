@@ -67,8 +67,9 @@ CREATE TABLE alamat_admin (
 CREATE TABLE otp (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL,                    
-    otp_code CHAR(6) NOT NULL,                   
-    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,     
+    otp_code CHAR(6) NOT NULL UNIQUE,                   
+    tanggal_dibuat DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    tanggal_kadaluarsa DATETIME NOT NULL,     
     status ENUM('active', 'used', 'expired') NOT NULL DEFAULT 'active',
     FOREIGN KEY (email) REFERENCES informasi_user(email) ON DELETE CASCADE ON UPDATE CASCADE
 );

@@ -35,59 +35,47 @@ const registrasiGet = (req, res) => {
         } else {
           const decoded = jwt.verify(tokenRegistrasi, process.env.registrasi);
           const decrypted = decryptAES(decoded.data);
-          const originalTokenHash = decryptAES(
-            responseGetInformasiUser[0].email
+          const user = responseGetInformasiUser.find(
+            (user) => user.email === decrypted
           );
 
-          if (decrypted !== originalTokenHash) {
+          if (!user) {
             return res.status(401).json({
               timestamp: formatDateToJakarta(new Date()),
               status: 2,
               message: "Token tidak valid !!!",
             });
-          } else {
-            const user = responseGetInformasiUser.find(
-              (user) => decryptAES(user.email) === decrypted
-            );
-
-            if (!user) {
-              return res.status(401).json({
-                timestamp: formatDateToJakarta(new Date()),
-                status: 2,
-                message: "Token tidak valid !!!",
-              });
-            } else if (user.registrasi_status === "pending") {
-              return res.status(200).json({
-                timestamp: formatDateToJakarta(new Date()),
-                status: 0,
-                message:
-                  "Pendaftaran sedang diproses. Hubungi petugas CS di cabang terdekat.",
-                processStatus: 3,
-              });
-            } else if (user.registrasi_status === "verified") {
-              return res.status(200).json({
-                timestamp: formatDateToJakarta(new Date()),
-                status: 0,
-                message:
-                  "Jangan berikan OTP ke siapapun, berikan OTP kepada CS untuk tindak selanjutnya.",
-                otp: "11223344",
-                processStatus: 2,
-              });
-            } else if (user.registrasi_status === "registered") {
-              return res.status(200).json({
-                timestamp: formatDateToJakarta(new Date()),
-                status: 0,
-                message:
-                  "Akun sudah terdaftar, silahkan lakukan aktivitas anda pada aplikasi kami",
-                processStatus: 1,
-              });
-            } else if (user.registrasi_status === "expired") {
-              return res.status(401).json({
-                timestamp: formatDateToJakarta(new Date()),
-                status: 2,
-                message: "SESSION EXPIRED !!!",
-              });
-            }
+          } else if (user.registrasi_status === "pending") {
+            return res.status(200).json({
+              timestamp: formatDateToJakarta(new Date()),
+              status: 0,
+              message:
+                "Pendaftaran sedang diproses. Hubungi petugas CS di cabang terdekat.",
+              processStatus: 3,
+            });
+          } else if (user.registrasi_status === "verified") {
+            return res.status(200).json({
+              timestamp: formatDateToJakarta(new Date()),
+              status: 0,
+              message:
+                "Jangan berikan OTP ke siapapun, berikan OTP kepada CS untuk tindak selanjutnya.",
+              otp: "11223344",
+              processStatus: 2,
+            });
+          } else if (user.registrasi_status === "registered") {
+            return res.status(200).json({
+              timestamp: formatDateToJakarta(new Date()),
+              status: 0,
+              message:
+                "Akun sudah terdaftar, silahkan lakukan aktivitas anda pada aplikasi kami",
+              processStatus: 1,
+            });
+          } else if (user.registrasi_status === "expired") {
+            return res.status(401).json({
+              timestamp: formatDateToJakarta(new Date()),
+              status: 2,
+              message: "SESSION EXPIRED !!!",
+            });
           }
         }
       } catch (error) {
